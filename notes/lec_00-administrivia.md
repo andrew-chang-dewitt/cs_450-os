@@ -1,4 +1,4 @@
-# intro
+# administrivia
 
 agenda:
 

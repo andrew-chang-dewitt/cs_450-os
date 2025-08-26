@@ -248,3 +248,134 @@ them. allowed the following advantages:
 > Q: what type of OS allows multiple simultaneous users & real-time interactive programs?
 >
 > A: time-sharing OS
+
+## tasks of an os
+
+- processes & threads (ch 5)
+- cpu scheduling (ch 6)
+- mem mgmt (ch 7)
+- i/o mgmt (ch 8)
+
+### processes & threads
+
+> [!IMPORTANT]
+> some definitions:
+>
+> - **_def:_ process**&mdash;a program in execution
+> - **_def:_ thread**&mdash;part of a program that can run
+>   independantly
+> - **_def:_ interrupt**&mdash;something that can pause a process or
+>   thread, whether on purpose (sigstop) or accident (an exception)
+
+the OS is responsible for:
+
+- creating & deleting procs & threads
+- suspending & resuming
+- scheduling
+- providing mechanisms for synchronization between P&T
+- providing mechanisms for interproc comms
+- providing mechanisms for handling _deadlocks_
+
+### cpu scheduling
+
+processes change state during exec:
+
+```
+            [ new ]
+               |
+       admitted|
+               |
+               v
+           [ ready ]<------------|
+              | ^                |
+              | |                |i/o or event done
+              | |                |
+sched.dispatch| |interrupt  [ waiting ]
+              | |                |
+              v |                |i/o or event wait
+          [ running ]------------|
+               |
+               |exit
+               |
+               v
+         [ terminated ]
+```
+
+os responsible:
+
+- deciding which proc to exec
+- deciding how long to exec for
+- handling external events (interrupts)
+
+os uses scheduling algo to optimize cpu time utilization, throughput, latency, and/or response time (depending on sys reqs)
+
+### i/o mgmt
+
+...
+
+### mem mgmt
+
+typ done in 1 of 2 methods:
+
+1. **synch:**
+
+- returns user control only when i/o is done
+- waits in loop until next interrupt
+- at most one i/o req at at a time
+
+2. **async:**
+
+- returns control w/out waiting to be done
+- OS communicates when req is done through signal/call-back
+- proc can continue to run while i/o works
+
+...
+
+> [!ASIDE]
+> Q: put mem lvls in order of speed from fastest to slowest
+>
+> A: cpu reg, cache, main mem, hard disk
+
+## resource mgmt
+
+basic fn's of os
+
+- abstract hw details for users & app devs
+- modern structured os' encapsulate access to hw resources
+  - only possible through os fn's (sys. svcs)
+  - os acts as vm over hw
+- resource mgmt is _key task_ of os
+
+### resources
+
+**_def:_ resources(os resources)**&mdash;hw & sw resources
+
+- procs & processors
+- mem, esp. main mem (RAM)
+- files
+- perph devices (i/o devices)
+
+distinguishes btwn real & virt resources
+
+- virt rescources include virtual mem, printers, coprocessors
+
+#### classification
+
+a resource has a value for each of the following classifications:
+
+1. hw or sw
+
+   - hw: e.g. cpu
+   - sw: e.g. proc or message
+
+2. preemptible or non-preemptible
+
+   - prempt.: e.g. cpu (can be taken away from a proc)
+   - non-pr.: e.g. printer (once assigned, must complete job)
+
+3. exclusive or shared use
+
+   - excl.: e.g. cpu (only usable by 1 proc at a time)
+   - shared: e.g. disk (simultaneously usable by 1+ procs)
+   - NOTE: os must ensure exclusive resources are used w/out conflict ->
+     **scheduling**

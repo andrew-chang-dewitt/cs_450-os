@@ -42,22 +42,20 @@ ex: cpu protection
 
 this leads us to our first os design approach, _simple structure_.
 
-> [!IMPORTANT]
->
-> ## approach 1: simple struct
->
-> a small, simple os w/ limited systems. grows into more complex
-> structure as more needs are met.
->
-> - lacks a well-defined structure (spaghetti code!)
-> - no well-defined layers or modularization
->
-> ### ex: MS-DOS
->
-> - originally for most functionality in least space
-> - kept growing as more features wanted, esp. as later versions of
->   windows were based on it
-> - worked/necessary because hw of the time was v limited
+### approach 1: simple struct
+
+a small, simple os w/ limited systems. grows into more complex
+structure as more needs are met.
+
+- lacks a well-defined structure (spaghetti code!)
+- no well-defined layers or modularization
+
+#### ex: MS-DOS
+
+- originally for most functionality in least space
+- kept growing as more features wanted, esp. as later versions of
+  windows were based on it
+- worked/necessary because hw of the time was v limited
 
 > [!ASIDE]
 >
@@ -107,43 +105,122 @@ designs typ. split into one of a few approaches:
 - layered kernal
 - microkernal
 
-### monolithic kernal
+### approach 2: monolithic kernal
 
-kernal might be made of modules, but they all share common address space & have access to its entirety.
+kernal might be made of modules, but they all share common address space & have
+access to its entirety.
+
+- basically a continuation of **approach 1**
+- high mem usage, can be disorganized & complicated to maintain
+- v difficult to translate to multi-core/multi-processing hw
 
 ```
-[ app 0 ]  [ app 1 ]  ... [ app n ]
-    ^          ^              ^
-    |          |              |
-- - | - - - -  |  - - - - - - - - -  sys svc interface
-    |          |              |
-    v          v              v
+[ app 0 ]   [ app 1 ] ... [ app n ]
+    ^           ^             ^
+....|...........| ............|..... sys svc interface
+    v           v             v
 [        service dispatcher       ]
     ^       ^    ^           ^
     |       |    |           |
     v       |    v           v
 [ module ]  |[ module ]  [ module ]
-     ^      |     ^  ^       ^
-     |      |     |  |       |
-     v      |     v  \----\  |
+    ^       |     ^  ^       ^
+    |       |     |  |       |
+    v       |     v  \----\  |
 [ module ]<-/  [ module ] |  |
-     ^                    v  v
-     |                 [ module ]
-     |                      ^
-- - -|- - - - - - - - - - - | - - -  hw interface
-     v                      v
+    ^                     v  v
+    |                  [ module ]
+    |                       ^
+....|.......................|....... hw interface
+    v                       v
 [             hardware            ]
 ```
 
-> [!TODO]
->
-> finish this!
+### approach 3: layered kernal
+
+composed of layers organized hierarchically, uses abstractions in each layer to
+simplify how parts of the kernal interact.
+
+- higher layers provide api for user-space code
+- lower layers interface w/ hw & provide abstractions for upper layers to
+  communicate with hw
+
+pros:
+
+- simplifies maintenance through proper modular design
+  - layers can be debugged independently
+  - layers can be replaced/upgraded independently
+
+cons:
+
+- can be vvv difficult to properly design/define layers!
+- more layers -> more indirection -> more overhead
+- only possible if all funtion deps can be topologically sorted in a directed acyclic graph; does not work if there are circular dependencies!
+
+```
+[ app 0 ]   [ app 1 ] ... [ app n ]
+    ^        ^  ^             ^
+    |        |  |             |
+    |     /--/  |             |
+....|..../......|.............|............... sys svc interface
+    |   /       |             |
+    |   |       |             |
+    v   v       v             v
+[ module ]  [ module ]    [ module ]   layer 2
+    ^   ^       ^             ^
+    |   |       |             |
+    |   \       |             |
+....|....\......|.............|...............
+    |     \---\ |             |
+    |         | |             |
+    v         v v             v
+[ module ]  [ module ]    [ module ]   layer 1
+    ^           ^          ^  ^
+    |           |          |  |
+    |           |     /----/  |
+....|...........|..../........|...............
+    |           |   /         |
+    |           |   |         |
+    v           v   v         v
+[ module ]  [ module ]    [ module ]   layer 0
+    ^           ^             ^
+....|...........|.............|............... hw interface
+    v           v             v
+[             hardware            ]
+```
+
+### microkernal
+
+newer design approach where os-level services typ. found in kernal space operate in user mode instead & are interacted w/ via service requests passed from user mode "client" processes to user mode "server" processes via the microkernal.
+
+pros:
+
+- portable: allows many different OS to be built on top of this kernal
+- extendable: allows easy extension of kernal via new services added in user space instead of in kernal
+- reliable/secure: significantly smaller, fails less often & failures in user mode services don't effect kernal
+
+cons:
+
+- perf overhead due to increased comms btwn kernal & user spaces
+- not always possible to move a service to user space
+
+```
+[ client proc ]  [ client proc ] ... [ server proc ] ...
+                        ^               ^                 user mode
+........................|...............|..........................
+ __                     |               |         __      kernal mode
+|                       \---------------/           |
+|                         microkernal               |
+|__                                               __|
+[                          hardware                 ]
+```
 
 ## dist archs
 
 an os can be more than local&mdash;in fact there's a long history of os' that
 run across multiple computers at once, treating them as though they were one
 single computer as far as the user can tell.
+
 - a truly distributed sys (e.g. Amoeba) makes dist of services across network transparent to client processes
 - microkernal simplifies distributing server procs
 

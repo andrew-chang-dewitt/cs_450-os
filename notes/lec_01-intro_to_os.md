@@ -376,10 +376,12 @@ distinguishes btwn real & virt resources
 a resource has a value for each of the following classifications:
 
 1. hw or sw
+
    - hw: e.g. cpu
    - sw: e.g. proc or message
 
 2. preemptible or non-preemptible
+
    - prempt.: e.g. cpu (can be taken away from a proc)
    - non-pr.: e.g. printer (once assigned, must complete job)
 

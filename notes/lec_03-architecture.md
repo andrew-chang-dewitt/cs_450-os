@@ -189,7 +189,7 @@ cons:
 [             hardware            ]
 ```
 
-### microkernal
+### approach 4: microkernal
 
 newer design approach where os-level services typ. found in kernal space operate in user mode instead & are interacted w/ via service requests passed from user mode "client" processes to user mode "server" processes via the microkernal.
 

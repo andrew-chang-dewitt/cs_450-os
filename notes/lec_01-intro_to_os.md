@@ -1,4 +1,16 @@
-# intro to OS
+---
+title: "OS: intro to operating systems"
+description: "Lecture that begins to explore the role, types, history, and behavior of operating systems. Sets expectations for remainder of semester."
+keywords:
+  - "operating systems"
+  - "lecture notes"
+  - "computer science"
+  - "cs 450"
+  - "illinois tech"
+meta:
+  byline: Andrew Chang-DeWitt
+  published: "2025-08-21T00:00-06:00"
+---
 
 > [!ASIDE]
 > Q: what does DOS, the first OS, stand for?
@@ -364,17 +376,14 @@ distinguishes btwn real & virt resources
 a resource has a value for each of the following classifications:
 
 1. hw or sw
-
    - hw: e.g. cpu
    - sw: e.g. proc or message
 
 2. preemptible or non-preemptible
-
    - prempt.: e.g. cpu (can be taken away from a proc)
    - non-pr.: e.g. printer (once assigned, must complete job)
 
 3. exclusive or shared use
-
    - excl.: e.g. cpu (only usable by 1 proc at a time)
    - shared: e.g. disk (simultaneously usable by 1+ procs)
    - NOTE: os must ensure exclusive resources are used w/out conflict ->

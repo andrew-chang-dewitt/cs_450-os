@@ -1,4 +1,16 @@
-# administrivia
+---
+title: "OS: administrivia"
+description: "Intruductory lecture notes."
+keywords:
+  - "operating systems"
+  - "lecture notes"
+  - "computer science"
+  - "cs 450"
+  - "illinois tech"
+meta:
+  byline: Andrew Chang-DeWitt
+  published: "2025-08-19T00:00-06:00"
+---
 
 agenda:
 

@@ -1,6 +1,6 @@
 ---
 title: "OS: architecture"
-description: ""
+description: "lecture on operating system architecture design concerns, types,& pros/cons of various models."
 keywords:
   - "operating systems"
   - "lecture notes"
@@ -144,7 +144,6 @@ kernal might be made of modules, but they all share common address space & have 
 an os can be more than local&mdash;in fact there's a long history of os' that
 run across multiple computers at once, treating them as though they were one
 single computer as far as the user can tell.
-
 - a truly distributed sys (e.g. Amoeba) makes dist of services across network transparent to client processes
 - microkernal simplifies distributing server procs
 

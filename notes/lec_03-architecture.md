@@ -260,8 +260,156 @@ dedicated roles between computers in dist. os arch:
   - database (persistence node)
 - netflix
 
+### terminal servers
+
+past: many/most computers were mainframes w/ thin clients that allowed
+users to run programs on the mainframe while in other various
+locations. these clients only handled displaying & all other logic was
+run on the mainframe.
+
+today: client machines are more intelligent and contain client-side
+applications.
+
+both have issues w/ vulnerabilities & either are creating lots of
+overhead on the mainframe that could easily be handled client side, or
+requiring complicated distributed client updates.
+
+#### idea: terminal servers
+
+examples: windows terminal services, citrix metaframe, xenserver
+
+each terminal thin client can interact w/ 1 of a selection of terminal
+servers via network; each server works together to distribute workload
+as needed.
+
 ## hw & os virt
 
-## cloud computing
+_**def:** virtualization_&mdash;abstracting a physical resource to
+simplify usage/maintenance while presenting as a real resource to the
+user/interface.
+
+ex:
+
+- virt machines
+- virt runtime sys
+- virt proc envs
+- storage virt
+- network virt
+- app virt
+
+### os virtualization
+
+abstracts a computer's hw resources to allow for multiple virt
+"computers" to share the same hw, even when running different operating
+systems.
+
+```
+[p1][p2]p3]...[pl] [p1][p2][p3]..[pm]     [p1][p2][p3]...[pn]
+[  os1 (windows) ] [  os1 (ubuntu)  ] ... [   os1 (macos)   ]
+[           virtual machine monitor (hypervisor)            ]
+[                            hardware                       ]
+```
+
+### runtime virtualization
+
+ex:
+
+- jvm
+- .NET common runtime lang (CLR)
+
+runtime env for prog lang: uses intermediate bytecode which is
+interpreted by a VM to target the underlying host architecture. allows
+programs to become independent of underlying sys platform. decouples
+app software from OS.
+
+> [!ASIDE]
+>
+> Q: what does hw virt allow on a single physical machine?
+>
+> A: operating systems
+
+_**def:** cloud computing_&mdash;it infra provided over network, including computer power, OS', data storage, software
+
+can be categorized as:
+
+- private cloud
+- public cloud
+- hybrid cloud
+
+### cloud service models
+
+- IaaS: provides VMs (& OS') via OS virt
+- PaaS: provides programming envs
+- SaaS: provides software
+
+metaphor: pizza as a service:
+
+| model  | trad on-prem: home | IaaS: frozen | PaaS: delivery | SaaS: dine out |
+| ------ | ------------------ | ------------ | -------------- | -------------- |
+| diy:   | dining table       | dining table | dining table   |                |
+|        | soda               | soda         | soda           |                |
+|        | elec/gas           | elec/gas     |                |                |
+|        | oven               | oven         |                |                |
+|        | fire               | fire         |                |                |
+|        | dough              |              |                |                |
+|        | sauce              |              |                |                |
+|        | toppings           |              |                |                |
+|        | cheese             |              |                |                |
+| -----  | ------------------ | ------------ | -------------- | -------------- |
+| cloud: |                    |              |                | dining table   |
+|        |                    |              |                | soda           |
+|        |                    |              | elec/gas       | elec/gas       |
+|        |                    |              | oven           | oven           |
+|        |                    |              | fire           | fire           |
+|        |                    | dough        | dough          | dough          |
+|        |                    | sauce        | sauce          | sauce          |
+|        |                    | toppings     | toppings       | toppings       |
+|        |                    | cheese       | cheese         | cheese         |
+
+### serverless
+
+misleading, still req. servers&mdash;just abstracts them away via a Function as a Service (FaaS) model.
+
+ex:
+
+- AWS lambda
+- gc functions
+- azure functions
+- ibm cloud functions
+
+> [!ASIDE]
+>
+> Q: company wants to deploy web app but doesn't want to manage OS or HW, focusing only on their app code. which model should they choose?
+>
+> A: PaaS
+
+### resource-sharing approaches
+
+ways to share underlying resources vary based on goals:
+
+```
+[client A][cl. B]  [cl. A][cl. B]  [cl. A][cl. B]  [cl. A][cl. B]
+    ^        ^        ^      ^        ^      ^        ^      ^
+    |        |        |      |        |      |        |      |
+    v        v        v      v        v      v        v      v
+[  app   ][ app ]  [ app ][ app ]  [ app ][ app ]  [     app    ]
+[  mid   ][ mid ]  [ mid ][ mid ]  [     mid    ]  [     mid    ]
+[  os    ][ os  ]  [ os  ][ os  ]  [     os     ]  [     os     ]
+[  vrt   ][ vrt ]  [     vrt    ]  [     vrt    ]  [     vrt    ]
+[  hw    ][ hw  ]  [     hw     ]  [     hw     ]  [     hw     ]
+|               |  |            |  |            |  |            |
+\-- datacenter -\  \--virtual.--\  \--sh. mid.--\  \-- multi- --\
+|     sharing                                   |     tenancy
+\--------------- multi-instance ----------------\
+```
 
 ## wrap up
+
+objectives:
+
+- understand high-level steps on how to design an os
+- user vs kernal mode
+- name diff kernal architectures
+- know diff terms for dist. arch.
+- understand what virt. is
+- distinguish btwn diff. cloud computing types

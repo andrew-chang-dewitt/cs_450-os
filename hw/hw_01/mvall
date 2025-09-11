@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+help_text="\
+Usage: $0 [OPTION]... EXTENSION DEST
+
+Move all files with matching EXTENSION a new directory at DEST. Exits with an
+error if DEST already exists.
+
+Options:
+  --log                 print number of files moved when done
+"
+
+declare -i log=0                        # logging output defaults to false
+declare -i argc=$#                      # track original arg count value
+# use declare -i to make integer variables instead of strings
+
+if [ "$1" = "--log" ]; then
+    log=1                               # set log to true
+    shift                               # pop first arg off of argv
+fi
+
+
+if [ $# -ne 2 ]; then                   # guard against bad number of args
+    declare -i argcexp=2+$log           # always expects 2 or 3 args
+    err_msg="Bad number of arguments. Expected $argcexp, got $argc."
+
+    printf "$err_msg\n\n" >&2           # send err msg to stderr
+    printf "$help_text"                 # print usage help text on stdout
+    exit 1                              # exit w/ error
+fi
+
+ext="$1"                                # save extension
+dst="$2"                                # save destination path
+
+if ! mkdir $dst 1>&2 2>/dev/null ; then # silently create destination directory
+                                        # & report any failures
+    err="Error creating directory at $dst:"
+    if [ -d $dst ]; then                # report more helpful msg if dst exists
+        printf "$err Directory already exists.\n" >&2
+    else
+        printf "$err Please make sure $dst is a valid path.\n" >&2
+    fi
+    exit 1                              # then exit w/ error code
+fi
+
+if ! mv *$ext $dst/ 1>&2 2>/dev/null    # move files matching ext
+then                                    # and guard against failure
+    printf "Error moving files." >&2
+    exit 1
+fi
+
+if [ $log -ne 0 ] ; then                # report count of files moved
+    count=$(ls -q $dst | wc -l)
+    printf "$count files moved\n"
+fi

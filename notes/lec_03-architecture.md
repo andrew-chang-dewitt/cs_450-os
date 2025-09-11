@@ -3,6 +3,7 @@ title: "OS: architecture"
 description: "lecture on operating system architecture design concerns, types,& pros/cons of various models."
 keywords:
   - "operating systems"
+  - "architecture"
   - "lecture notes"
   - "computer science"
   - "cs 450"

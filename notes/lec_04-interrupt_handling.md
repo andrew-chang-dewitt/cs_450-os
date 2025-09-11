@@ -3,6 +3,7 @@ title: "OS: interrupt handling"
 description: "lecture on methods of waiting/interrupting processes."
 keywords:
   - "operating systems"
+  - "interrupts"
   - "lecture notes"
   - "computer science"
   - "cs 450"

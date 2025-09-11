@@ -2,8 +2,8 @@
 title: "OS: history of os"
 description: "Quick history of operating systems from first gen, tube computers to modern fourth gen multicore computers."
 keywords:
-  - "history"
   - "operating systems"
+  - "history"
   - "lecture notes"
   - "computer science"
   - "cs 450"

@@ -18,6 +18,12 @@ Math 474, Fall 2025 \
 2025 Sept. 9
 
 :::
+
+> [!TODO]
+>
+> - [x] syntax highlighting?
+> - [ ] complete tasks 4 & 5
+
 :::hgroup{.titlegroup}
 
 ## task 1
@@ -30,7 +36,7 @@ basic linux command line & file system navigation
 
 > Determine your current working directory and display its contents.
 
-```
+```console
 andrew@topo: ~/college/cs_450-os/hw/hw_01
 $ echo $PWD
 /home/andrew/college/cs_450-os/hw/hw_01
@@ -50,7 +56,7 @@ Using the same command as above, `ls`, _all_ files can be listed using the `-a`
 flag, which lists all files in the target directory, as explained in the quoted
 portion of the help text (given by `ls --help`) below.
 
-> ```
+> ```console
 > Usage: ls [OPTION]... [FILE]...
 >
 > //...
@@ -63,7 +69,7 @@ target directory can be specified using the first positional argument.
 Additionally, a common alias for the home directory is `~`. Putting all this
 together gives a command of `ls -a ~`:
 
-```
+```console
 andrew@topo: ~/college/cs_450-os/hw/hw_01
 $ ls -a ~
 .                        .landscape                 .tmux.conf
@@ -100,8 +106,7 @@ $ ls -a ~
 Download the file & save it to `assignment_files/` using the `-O` flag for
 `wget`:
 
-```
-andrew@topo: ~/college/cs_450-os/hw/hw_01
+```console
 andrew@topo: ~/college/cs_450-os/hw/hw_01
 $ wget https://go.uniwue.de/chaos -O assignment_files/chaos.tgz
 --2025-09-10 11:23:00--  https://go.uniwue.de/chaos
@@ -130,7 +135,7 @@ Then extract with `tar` using the following flags:
 - `-C` to tell `tar` to extract into `assignment_files/` by performing
   operations in the desired directory
 
-```
+```console
 andrew@topo: ~/college/cs_450-os/hw/hw_01
 $ tar -C assignment_files/ -xf assignment_files/chaos.tgz
 ```
@@ -139,7 +144,7 @@ Finally, find the requested file w/ `find` by passing the target directory as
 the first positional argument & telling `find` to search for files matching
 some filename (w/out leading directories) using the `-name` flag:
 
-```
+```console
 andrew@topo: ~/college/cs_450-os/hw/hw_01
 $ find assignment_files -name BS.kurs
 assignment_files/chaos/Hotels/Deutschland/Bayern/Wuerzburg/BS.kurs
@@ -173,7 +178,7 @@ Separate & redirect outputs:
 - `stdout` to `stdout.log` using `COMMAND > OUTPUT` &
 - `stderr` to `stderr.log` using `COMMAND 2> OUTPUT`
 
-```
+```console
 andrew@topo: ~/college/cs_450-os/hw/hw_01
 $ ls ./assignment_files ./nonexistant > stdout.log 2>stderr.log
 
@@ -196,7 +201,7 @@ ls: cannot access './nonexistant': No such file or directory
 
 First, let's create some test files & confirm they have the desired contents:
 
-```
+```console
 andrew@topo: ~/college/cs_450-os/hw/hw_01/assignment_files
 $ for x in A B C D; do
 >   echo "this is file $x" > $x
@@ -223,7 +228,7 @@ this is file D
 
 Then let's see what happens when we run the command `cat A - B <C >D`:
 
-```
+```console
 andrew@topo: ~/college/cs_450-os/hw/hw_01/assignment_files
 $ cat A - B <C >D
 
@@ -260,7 +265,7 @@ it appear to read the files `A`, `B`, & `C` in the order `A`, `C`, then `B`?
 
 Consulting `man cat`:
 
-> ```
+> ```console
 > SYNOPSIS
 >        cat [OPTION]... [FILE]...
 >
@@ -289,7 +294,7 @@ read, it reads from `stdin`. This means that `cat A - B <C >D` does the
 
 First let's tackle sorting. We can read from `/etc/passwd` using `cat` & sort the output using `sort`:
 
-```
+```console
 andrew@topo: ~/college/cs_450-os
 $ cat /etc/passwd | sort
 Debian-exim:x:105:108::/var/spool/exim4:/usr/sbin/nologin
@@ -328,7 +333,7 @@ www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
 
 Pretty close, but it'd be better if `Debian-exim` was between `daemon` & `chcpcd`. This can be done using `sort`'s '`-f` flag:
 
-```
+```console
 NAME
        sort - sort lines of text files
 
@@ -340,7 +345,7 @@ NAME
 
 which gives us:
 
-```
+```console
 andrew@topo: ~/college/cs_450-os
 $ cat /etc/passwd | sort -f
 andrew:x:1000:1000:,,,:/home/andrew:/bin/bash
@@ -392,7 +397,7 @@ shell we wish to _exclude_. `grep` uses POSIX regex (enabled using the `-E`
 flag), so no negative lookahead exists; however, the expression can still be
 negated by supplying the `-v` flag.
 
-```
+```console
 andrew@topo: ~/college/cs_450-os
 $ cat /etc/passwd | grep -vE '(:/bin/false|:/usr/sbin/nologin)$' | sort -f
 andrew:x:1000:1000:,,,:/home/andrew:/bin/bash
@@ -412,14 +417,14 @@ sync:x:4:65534:sync:/bin:/bin/sync
 
 Use `>` to redirect output to `assignment_files/hist`:
 
-```
+```console
 andrew@topo: ~/college/cs_450-os/hw/hw_01/
 $ history > assignment_files/hist
 ```
 
 then get head & tail using default values of 10 lines each:
 
-```
+```console
 andrew@topo: ~/college/cs_450-os/hw/hw_01/
 $ head assignment_files/hist && tail assignment_files/hist
  1055  git cob tmp
@@ -459,7 +464,7 @@ Download the html with `curl`, then use `grep`'s flags...
 & finally use `sed` to capture the entire line, then prepend "URL: " to the
 captured reference:
 
-```
+```console
 andrew@topo: ~/college/cs_450-os/hw/hw_01
 $ curl www.google.com \
 >   | grep -oP '(?<=<a href=")[^"]*(?=">)' \
@@ -555,7 +560,7 @@ fi
 
 testing this script with a directory containing the following 6 files:
 
-```
+```console
 andrew@topo: ~/college/cs_450-os/hw/hw_01/test
 $ tr3
 .
@@ -637,11 +642,95 @@ process management
 
 ### part (a)
 
-> Briefly explain the different signals used with the `kill` command (e.g., `TERM`, `INT`, `KILL`) and in what situation you would use each.
+> Briefly explain the different signals used with the `kill` command (e.g.,
+> `TERM`, `INT`, `KILL`) and in what situation you would use each.
+
+The bash util `kill` is misleadingly named&mdash;it does not necessarily _kill_
+the process targeted by the given `PID`. Instead, it sends a _signal_ to the
+process, which itself may instruct the process to kill itself or perhaps take
+some other action (or no action). By default, kill sends the `TERM` signal;
+however, any other signal can be sent. See man page quote:
+
+```console
+NAME
+       kill - send a signal to a process
+
+SYNOPSIS
+       kill [options] <pid> [...]
+
+DESCRIPTION
+       [...]  Alternate signals may be specified in
+       three ways:  -9,  -SIGKILL  or  -KILL. [...]
+
+OPTIONS
+       <pid> [...]
+              Send signal to every <pid> listed.
+
+       -<signal>
+       -s <signal>
+       --signal <signal>
+              Specify the signal  to  be  sent.   The
+              signal  can  be specified by using name
+              or number.  The behavior of signals  is
+              explained in signal(7) manual page.
+```
+
+Note the reference to `signal(7)` man page there at the end&mdash;let's check
+that out to see what the signals `TERM`, `INT`, `KILL` & others typically do. The
+following table (edited for brevity & to focus only on the more interesting
+signals for our purposes) is from the output of `man 7 signal`:
+
+```console
+Signal    Action   Comment
+──────────────────────────────────────────────
+SIGCHLD   Ign     Child stopped or terminated
+SIGCONT   Cont    Continue if stopped
+SIGHUP    Term    Hangup detected on
+                  controlling terminal
+SIGINT    Term    Interrupt from keyboard
+SIGKILL   Term    Kill signal
+SIGTERM   Term    Termination signal
+SIGSTOP   Stop    Stop process
+
+The signals SIGKILL and SIGSTOP cannot be
+caught, blocked, or ignored.
+```
+
+In plain english, usual outcomes of sending the following signals are:
+
+- `CHLD`: sent when a child process is done; can be used to implement
+  `wait()`
+- `CONT`: sent when a process should resume execution after being
+  suspended/stopped
+- `HUP`: sent when controlling terminal/process dies; typically means
+  receiving process should die too
+- `INT`: sent when requesting a process to terminate; typically allows
+  process to gracefully complete
+- `KILL`: sent when requesting a process to terminate immediately;
+  **un-blockable/-ignorable/-catchable** & does not allow for any
+  cleanup by the process
+- `TERM`: sent when requesting a process to terminate; typically allows
+  process to gracefully complete (same as `INT`)
+- `STOP`: sent when requesting a process to suspend execution for
+  resumption later
 
 ### part (b)
 
-> Use the `&` operator to run the `cat /dev/random` command in the background. Note the process ID (`PID`) that is displayed. Then, terminate the background process you started.
+> Use the `&` operator to run the `cat /dev/random` command in the background.
+> Note the process ID (`PID`) that is displayed. Then, terminate the background
+> process you started.
+
+On my first attempt, I executed the command requested using `cat /dev/random &`; however, this allowed `cat` to continue sending output to stdout despite being in the background, making it virtually impossible to find the process id then type the kill command to terminate the process. To make things simpler, I first redirected the output from `cat` to `/dev/null` to silence it.
+
+```console
+andrew@topo: ~/college/cs_450-os
+$ cat /dev/random >/dev/null &
+[1] 62269
+
+andrew@topo: ~/college/cs_450-os
+$ kill 62269
+[1]+  Terminated              cat /dev/random > /dev/null
+```
 
 :::hgroup{.titlegroup}
 

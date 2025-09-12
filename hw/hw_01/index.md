@@ -19,11 +19,6 @@ Math 474, Fall 2025 \
 
 :::
 
-> [!TODO]
->
-> - [x] syntax highlighting?
-> - [ ] complete tasks 4 & 5
-
 :::hgroup{.titlegroup}
 
 ## task 1
@@ -113,17 +108,20 @@ $ wget https://go.uniwue.de/chaos -O assignment_files/chaos.tgz
 Resolving go.uniwue.de (go.uniwue.de)... 132.187.3.108
 Connecting to go.uniwue.de (go.uniwue.de)|132.187.3.108|:443... connected.
 HTTP request sent, awaiting response... 301 Moved Permanently
-Location: https://www.uni-wuerzburg.de/fileadmin/10030200/user_upload/teaching/OS/chaos.tgz
+Location: https://www.uni-wuerzburg.de/fileadmin/10030200/user_upload/teaching/O
+S/chaos.tgz
  [following]
---2025-09-10 11:23:00--  https://www.uni-wuerzburg.de/fileadmin/10030200/user_upload/teachi
-ng/OS/chaos.tgz
+--2025-09-10 11:23:00--  https://www.uni-wuerzburg.de/fileadmin/10030200/user_up
+load/teachi ng/OS/chaos.tgz
 Resolving www.uni-wuerzburg.de (www.uni-wuerzburg.de)... 132.187.1.118
-Connecting to www.uni-wuerzburg.de (www.uni-wuerzburg.de)|132.187.1.118|:443... connected.
+Connecting to www.uni-wuerzburg.de (www.uni-wuerzburg.de)|132.187.1.118|:443...
+connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 1163 (1.1K) [application/x-gzip]
 Saving to: ‘assignment_files/chaos.tgz’
 
-assignment_files/chaos 100%[===========================>]   1.14K  --.-KB/s    in 0s
+assignment_files/chaos 100%[===========================>]   1.14K  --.-KB/s    i
+n 0s
 
 2025-09-10 11:23:01 (233 MB/s) - ‘assignment_files/chaos.tgz’ saved [1163/1163]
 ```
@@ -760,7 +758,7 @@ $ kill 62269
 
 > First, write a script that parses the content of a given `URL` and outputs
 > all links. The script accepts either 1 or 2 arguments. If only 1 argument
-> is passed, it is the domain. With two argu ents, the first argument is the
+> is passed, it is the domain. With two arguments, the first argument is the
 > domain and the second is the path. This means that when calling `script.sh
 www.test.com` and `script.sh www.test.de/path1/path2`, only the page
 > `www.test.com` is read, but when calling `script.sh www.test.com path1`,
@@ -768,9 +766,50 @@ www.test.com` and `script.sh www.test.de/path1/path2`, only the page
 > been captured, only the URLs that start with `http[s]` should be
 > considered for simplicity.
 
+```bash
+#!/usr/bin/env bash
+
+# get domain from arg0 by matching everything before first `/`,
+# assumes no leading http:// or https://
+domain=`expr "$1" : '\([^/]*\)'`
+# get path as is; assumes no leading `/`
+path=$2
+# build target url
+base="https://$domain"
+target="$base/$path"
+# build regex for matching links in same domain (either w/
+# explicit domain or implicit; e.g. starting w/ `/`)
+rgx_a='(?<=href=")('
+rgx_b='|/).*?(?=\")'
+regex=$rgx_a$base$rgx_b
+
+# fetch target w/out progress bar,
+# then filter to lines containing anchor tags,
+# then filter to urls in same domain
+curl -s $target \
+  | grep -P '<a.*href=\".*"' \
+  | grep -oP $regex
+```
+
+which when executed on `www.google.com`, gives the following:
+
+```console
+andrew@topo: ~/college/cs_450-os
+$ hw/hw_01/catchem/links www.google.com
+https://www.google.com/imghp?hl=en&tab=wi
+https://www.google.com/intl/en/about/products?tab=wh
+/preferences?hl=en
+/advanced_search?hl=en&amp;authuser=0
+/intl/en/ads/
+/services/
+/intl/en/about.html
+/intl/en/policies/privacy/
+/intl/en/policies/terms/
+```
+
 ### part (b)
 
-> The second script should control the crawling. It starts with the staring
+> The second script should control the crawling. It starts with the starting
 > website (e.g., `https://pokemon.fandom.com/wiki/List_of_Pokémon`) (Level
 > 0). The links there are read with the script from task a). These links
 > (Level 1) should be saved to a file, e.g., `level1.txt`. Further more, for

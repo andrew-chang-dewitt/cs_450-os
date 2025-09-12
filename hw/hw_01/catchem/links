@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# get domain from arg0 by matching everything before first `/`,
+# assumes no leading http:// or https://
+domain=`expr "$1" : '\([^/]*\)'`
+# get path as is; assumes no leading `/`
+path=$2
+# build target url
+base="https://$domain"
+target="$base/$path"
+# build regex for matching links in same domain (either w/
+# explicit domain or implicit; e.g. starting w/ `/`)
+rgx_a='(?<=href=")('
+rgx_b='|/).*?(?=\")'
+regex=$rgx_a$base$rgx_b
+
+# fetch target w/out progress bar,
+# then filter to lines containing anchor tags,
+# then filter to urls in same domain
+curl -s $target \
+  | grep -P '<a.*href=\".*"' \
+  | grep -oP $regex

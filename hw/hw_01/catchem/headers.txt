@@ -1,0 +1,16 @@
+accept: text/html
+accept-encoding: gzip, deflate, br, zstd
+accept-language: en-US,en;q=0.9
+cache-control: max-age=0
+cookie: wikia_beacon_id=l7VDeJ9WqP; _b2=bkRYaAASmt.1748185723479; exp_bucket_2=v5-96; usprivacy=1YNN; wikia_session_id=6TUb3SBz3J; _lc2_fpi=17cd767946ca--01jw3ztfekknnsf91yfj0es3wd; _lc2_fpi_meta=%7B%22w%22%3A1748185726419%7D; _pubcid=3afdc355-ef8f-48d8-bfe8-4a802de57c3c; fandom_global_id=c720fc1f-68ab-4565-905c-899ef154f060; fan_visited_wikis=876,2827,11954; eb=60; _pubcid_cst=zix7LPQsHA%3D%3D; exp_bucket=v6-71; _li_dcdm_c=.fandom.com; addtl_consent=1~; tracking-opt-in-status=rejected; euconsent-v2=CPt3fQAPt3fQACNAFAENDLCgAAAAAAAAACiQAAAOCgDAB-AIsAZ8A6QDBAHBAAAA.YAAAAAAAAAAA; Geo=OK; Geo={%22region%22:%22IL%22%2C%22city%22:%22chicago%22%2C%22country_name%22:%22united states%22%2C%22country%22:%22US%22%2C%22continent%22:%22NA%22}; sessionId=f8dc6945-2354-40de-8768-c7be41685548; sitenoticeHidden=0; pvNumber=4; pvNumberGlobal=4
+dnt: 1
+priority: u=0, i
+sec-ch-ua: "Chromium";v="140", "Not=A?Brand";v="24", "Microsoft Edge";v="140"
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: "Windows"
+sec-fetch-dest: document
+sec-fetch-mode: navigate
+sec-fetch-site: none
+sec-fetch-user: ?1
+upgrade-insecure-requests: 1
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0

@@ -760,7 +760,7 @@ $ kill 62269
 
 > First, write a script that parses the content of a given `URL` and outputs
 > all links. The script accepts either 1 or 2 arguments. If only 1 argument
-> is passed, it is the domain. With two argu ents, the first argument is the
+> is passed, it is the domain. With two arguments, the first argument is the
 > domain and the second is the path. This means that when calling `script.sh
 www.test.com` and `script.sh www.test.de/path1/path2`, only the page
 > `www.test.com` is read, but when calling `script.sh www.test.com path1`,
@@ -770,7 +770,7 @@ www.test.com` and `script.sh www.test.de/path1/path2`, only the page
 
 ### part (b)
 
-> The second script should control the crawling. It starts with the staring
+> The second script should control the crawling. It starts with the starting
 > website (e.g., `https://pokemon.fandom.com/wiki/List_of_Pokémon`) (Level
 > 0). The links there are read with the script from task a). These links
 > (Level 1) should be saved to a file, e.g., `level1.txt`. Further more, for

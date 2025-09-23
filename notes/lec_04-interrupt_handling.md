@@ -56,7 +56,11 @@ possible to switch off (ignore/mask) interrupts, but can be dangrous &
 should be done w/ care & for as short a time as possible when actually
 necessary.
 
+<section>
+
 ### polling vs interrupts
+
+<div>
 
 choose polling when...
 
@@ -90,22 +94,24 @@ with polling:
 - process if data available: 2 μs
 - **total: 3 μs**
 
-> [!ASIDE]
->
-> Q: which situation favors interrupts over polling?
->
-> A) dedicated sys tasks
-> B) freq. predictible events
-> C) deterministic timing constraints
-> D) infreq. undpred. events
->
-> A: D
+</div>
 
 > [!ASIDE]
 >
-> Q: what type of interrupt is triggered by a div. by zero event?
+> ##### Q: which situation favors interrupts over polling?
+>
+> 1. dedicated sys tasks
+> 2. freq. predictible events
+> 3. deterministic timing constraints
+> 4. infreq. undpred. events
+>
+> A: 1) infreq. unpred. events
+>
+> ##### Q: what type of interrupt is triggered by a div. by zero event?
 >
 > A: synchronous interrupt
+
+</section>
 
 ## interaction of components
 
@@ -123,7 +129,9 @@ interrupts need to stop normal program flow & must handle passing control & resu
 - async: happens no matter what sys is doing (e.g. network adapter
   reports incoming message, disk storage reports compl. of block
 
-> [!TODO] > [!TODO]
+> [!TODO]
+>
+> ?
 
 ### interrupt-request (IRQ) processing
 
@@ -192,8 +200,6 @@ how machine knows what code to run for what interrupt type
 > Q: which component stores start addresses of interrupt service routines?
 >
 > A: Interrupt Vector Table (IVT)
-
-> [!ASIDE]
 >
 > Q: match term to def
 >
@@ -217,7 +223,6 @@ os has many services that app progs use, done via sys calls
 - _**def:** system call_&mdash;well-defined entry point into the os
 
 - sys calls work via special mechanism:
-
   - software interrupt (called trap) or supervisor call (SVC)
   - this lets app prog not have to know addresses of sys routines
 

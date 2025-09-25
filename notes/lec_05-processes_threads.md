@@ -354,7 +354,207 @@ in practice has some important concerns:
 - communication btwn threads has a cost (but much lower than full process context switch)
 - deps btwn diff parts of same prog limits time increases to `log(n)` time, not `1/n` (where n is number of threads)
 
+### new process description model
+
+```
++-----+   +--------+
+| PCB |   | PCB    |
+|     |   |        |
++-----+   +--------+
+|stack|   |thread 1|
+|     |   |ctrl blk|
+|     |   +--------+
++-----+   |thread 1|
+|data |   |stack   |
+|     |   +--------+
++-----+   |thread 2|
+|prog.|   |ctrl blk|
+|code |   +--------+
+|     |   |thread 2|
+|     |   |stack   |
+|     |   +--------+
+|     |   |data    |
+|     |   |        |
+|     |   +--------+
+|     |   |prog.   |
+|     |   |code    |
+|     |   |        |
+|     |   |        |
+|     |   |        |
+|     |   |        |
++-----+   +--------+
+```
+
+### threads vs processes
+
+common verbage:
+
+- heavyweight process: process
+- lightweight process: thread
+
+advantages of threads:
+
+- quicker to create; spawning only takes allocating new stack & CPU state block
+- quicker switching
+- shares data easily
+
+disadvantages of threads:
+
+- procs more flexible, don't even have to run on same processor
+- no security btwn threads; they can all access eachother's data
+- if one thread blocks, all threads in that process/task block
+
+### thread pools
+
+because threads have some overhead, a common technique to reduce time spent creating/destroying/maintaining that overhead is to create a _thread pool_:
+
+_**def**_&mdash;a set of threads kept on stack w/out destroying when one becomes inactive; allows awakening a sleeping/inactive thread from the pool when a new thread would have otherwise been needed to be created.
+
+advantages:
+
+- faster when needing lots of short-lived threads
+- allows number of threads to be bound by size of pool
+
+disadvantages:
+
+- higher mem overhead w/ unused threads
+
 ## threads implementation
+
+two broad categories of implementations of threads:
+
+1. user-level threads (ULT)
+   - implemented in user space using a library
+   - that library then handles kernal-level comms as needed; typically w/ only one process/thread
+   - kernal is thus not aware there are multiple threads in the process it is communicating with
+   - user space process must manage its own private thread table
+   - pros:
+     - lightweight switching, no kernal privileges needed
+     - cross-platform; easy to compile to different target OS'
+   - cons:
+     - if one thread blocks, entire process blocks _all_ threads in process
+2. kernal-level threads (KLT)
+   - threads implemented in kernal space **&** user space
+   - can create multiple kernal threads/processes for multiple user space threads/processes
+   - threads are known to kernal in a Thread Control Block (TCB)
+   - thread code executes in user mode
+   - from OS perspective, scheduling unit is thread, not process
+   - a thread context switch requires syscall
+   - pros:
+     - fine-grain scheduling, done on per-thread basis
+     - if a thread blocks, other threads can be scheduled w/out blocking process
+   - cons:
+     - heavier thread context switching
+
+### mapping threads to processes
+
+either 1:1 or 1:n
+
+- 1:1&mdash;exactly one thread per process
+- 1:n&mdash;multiple threads per process
+
+mapping of user threads to kernal threads also important:
+
+- n:1
+- 1:1
+- n:n
+- hybrid (two-level)
+
+#### n:1 multithreading model
+
+several user-level threads mapped to single kernal thread
+
+- thread mgmt in user space leads to efficient impl
+- _however_, if 1 thread blocks, entire proc blocks
+- also only 1 thread can access kernal at a time, limiting parallelism
+
+examples: soalris green threads, gnu portable threads
+
+#### 1:1 multithreading model
+
+each user thread has matching kernal thread
+
+- 1 thread blocking doesn't mean any other thread blocks
+- increased parallelism as any thread can access kernal at any time
+- _however_, creating user-level thread requires kernal-level even if it'll never be used
+
+ex: windows nt/xp/2000, linux, solaris 9 & later
+
+#### n:n multithreading model
+
+allows many ULT to be mapped to smaller number of KLT
+
+- allows OS to create sufficient num of kernal threads
+- increased parallelism w/out giving up space/time efficiency
+
+ex: solaris prior to version 9, windows nt/2000 w/ threadfiber pkg
+
+#### hybrid multithreading model
+
+similar to n:n, but allows ULT to be bound to specific KLT
+
+- some ULT may have exactly one KLT w/out sharing w/ any other ULT at the same time that many other ULT may share a single KLT
+
+ex: IRIX, HP-UX, Tru64 UNIX, Solaris 8 & earlier
+
+### issues to consider in threads
+
+- semantics of `fork()` & `execvp()` syscalls
+- thread cancellation
+- sig handling
+
+#### semantics of `fork()` & `execvp()` syscalls
+
+#### thread cancellation
+
+- **why:** thread canceled before finished
+  - e.g. if one thread finishes db search, other search threads can be cancelled
+  - if user presses button to navigate, loading/action on current location may need cancelled to change location
+
+- **how:** two approaches
+  1. _async cancellation_: terminate target thread immediately
+  2. _deferred cancellation_: target thread polls to find if it needs cancelled (more controlled & safe)
+
+#### sig handling
+
+singals used in UNIX systems to notify a proc that an even has occurred
+
+all signals (in non-threading or multithreading contexts) follow pattern:
+
+1. signal generated by event
+2. singal delivered to process
+3. once delivered, a signal **must** be handled
+
+in multithreading environments, there's 4 options for the above pattern:
+
+- deliver signal to _only_ the thread to which singal applies
+- deliver signal to _every_ thread
+- deliver the signal to _certain_ threads in the process
+- assign a specific thread to receive _all_ threads in process
+
+> [!ASIDE]
+>
+> **Q:**
+>
+> What is primary disadvantage of user-level threads?
+>
+> 1. requires kernal support
+> 2. blocking 1 thread blocks all threads
+> 3. limited portability
+> 4. heavy context switching
+>
+> **A:** B
+>
+> **Q:**
+>
+> In multithreading, what maps exactly one ULT to one KLT?
+>
+> 1. n:1
+> 2. n:n
+> 3. 1:1
+> 4. hybrid
+>
+> **A:** C
 
 ## threads in Java
 

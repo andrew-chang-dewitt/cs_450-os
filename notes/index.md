@@ -11,3 +11,4 @@ description: lecture & study notes
 3. [architecture](./lec_03-architecture/)
 4. [interrupt handling](./lec_04-interrupt_handling/)
 5. [processes & threads](./lec_05-processes_threads/)
+6. [scheduling](./lec_06-scheduling/)

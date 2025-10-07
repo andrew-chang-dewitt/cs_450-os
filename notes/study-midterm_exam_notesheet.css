@@ -1,0 +1,221 @@
+@media print {
+  :root {
+    --fonts-size-tiny: 6pt;
+    --fonts-size-small: 8pt;
+    --fonts-size-regular: 10pt;
+    --fonts-size-regular-medium: 12pt;
+    --fonts-size-medium: 12pt;
+    --fonts-size-large: 14pt;
+    --fonts-size-extra-large: 14pt;
+    --fonts-size-huge: 14pt;
+    font-size: 8px;
+    max-width: unset;
+    width: 8.5in;
+  }
+  div:has(> table),
+  pre {
+    break-before: avoid;
+    break-inside: avoid;
+  }
+  ul,
+  ol {
+    padding-left: var(--layout-grid-gap-wide);
+  }
+}
+
+@page {
+  margin: 0.1in;
+  @top-left {
+    content: "◸";
+    font-size: var(--fonts-size-tiny);
+  }
+  @top-right {
+    content: "◹";
+    font-size: var(--fonts-size-tiny);
+  }
+  @bottom-left {
+    content: "◺";
+    font-size: var(--fonts-size-tiny);
+  }
+  @bottom-right {
+    content: "◿";
+    font-size: var(--fonts-size-tiny);
+  }
+}
+
+table,
+pre code,
+code {
+  font-size: var(--fonts-size-tiny);
+}
+div:has(> table),
+pre {
+  padding: 0.5rem 2rem;
+  margin: 0 0 0.5rem 0;
+}
+div > table {
+  margin: 0;
+}
+li > p:has(+ div > table),
+li > p:has(+ pre) {
+  margin: 0;
+}
+
+/*
+ * put code blocks in RIGHT SIDEBAR to save space!
+ *
+ * floats targeted elements to right margin on wider screens & print
+ */
+@media print, screen and (min-width: env(--layout-screen-medium)) {
+  /* init counter for figure number */
+  :root {
+    counter-reset: fig -1;
+  }
+  /* float preceding element to left to allow aside to position to the right of
+   * it */
+  *:has(+ div > table),
+  *:has(+ pre) {
+    float: left;
+    border-top: 0.25em solid var(--colors-accent1);
+  }
+  *:has(+ div > table)::after,
+  *:has(+ pre)::after {
+    content: " (see fig-" counter(fig, decimal) ")";
+    font-style: italic;
+    font-size: var(--fonts-size-tiny);
+    counter-increment: fig 1;
+  }
+  div:has(> table),
+  pre {
+    float: right;
+    /* ensure right-floated asides come after any previous aside */
+    clear: right;
+    margin-left: var(--layout-grid-gap-wide);
+    border-top: 0.25em solid var(--colors-accent1);
+  }
+  div:has(> table)::before,
+  pre::before {
+    display: block;
+    content: "fig-" counter(fig, decimal);
+    font-style: italic;
+    font-size: var(--fonts-size-tiny);
+  }
+  /* ensure non-aside element following left-floated aside clears preceding
+   * aside */
+  div:has(> table) + *,
+  pre + *,
+  *:has(div > table) + *,
+  *:has(pre) + * {
+    clear: left;
+  }
+}
+@media screen and (min-width: env(--layout-screen-medium)) {
+  *:has(+ div > table),
+  *:has(+ pre) {
+    width: calc(40% - var(--layout-grid-gap-wide));
+  }
+  div:has(> table),
+  pre {
+    width: 60%;
+  }
+}
+@media print {
+  *:has(+ div > table),
+  *:has(+ pre) {
+    width: calc(3.5in - var(--layout-grid-gap-wide));
+  }
+  ol li:has(+ div > table),
+  ul li:has(+ div > table),
+  ol li:has(+ pre),
+  ul li:has(+ pre),
+  ol li > p:has(+ div > table),
+  ul li > p:has(+ div > table),
+  ol li > p:has(+ pre),
+  ul li > p:has(+ pre),
+  ol li > span:has(+ div > table),
+  ul li > span:has(+ div > table),
+  ol li > span:has(+ pre),
+  ul li > span:has(+ pre) {
+    width: calc(3.5in - 2 * var(--layout-grid-gap-wide));
+  }
+  ol ol li:has(+ div > table),
+  ol ul li:has(+ div > table),
+  ul ol li:has(+ div > table),
+  ul ul li:has(+ div > table),
+  ol ol li:has(+ pre),
+  ol ul li:has(+ pre),
+  ul ol li:has(+ pre),
+  ul ul li:has(+ pre),
+  ol ol li > p:has(+ div > table),
+  ol ul li > p:has(+ div > table),
+  ul ol li > p:has(+ div > table),
+  ul ul li > p:has(+ div > table),
+  ol ol li > p:has(+ pre),
+  ol ul li > p:has(+ pre),
+  ul ol li > p:has(+ pre),
+  ul ul li > p:has(+ pre),
+  ol ol li > span:has(+ div > table),
+  ol ul li > span:has(+ div > table),
+  ul ol li > span:has(+ div > table),
+  ul ul li > span:has(+ div > table),
+  ol ol li > span:has(+ pre),
+  ol ul li > span:has(+ pre),
+  ul ol li > span:has(+ pre),
+  ul ul li > span:has(+ pre) {
+    width: calc(3.5in - 3 * var(--layout-grid-gap-wide));
+  }
+  ol ol ol:has(+ div > table),
+  ol ol ul:has(+ div > table),
+  ol ul ol:has(+ div > table),
+  ol ul ul:has(+ div > table),
+  ul ol ol:has(+ div > table),
+  ul ol ul:has(+ div > table),
+  ul ul ol:has(+ div > table),
+  ul ul ul:has(+ div > table),
+  ol ol ol:has(+ pre),
+  ol ol ul:has(+ pre),
+  ol ul ol:has(+ pre),
+  ol ul ul:has(+ pre),
+  ul ol ol:has(+ pre),
+  ul ol ul:has(+ pre),
+  ul ul ol:has(+ pre),
+  ul ul ul:has(+ pre),
+  ol ol ol li > p:has(+ div > table),
+  ol ol ul li > p:has(+ div > table),
+  ol ul ol li > p:has(+ div > table),
+  ol ul ul li > p:has(+ div > table),
+  ul ol ol li > p:has(+ div > table),
+  ul ol ul li > p:has(+ div > table),
+  ul ul ol li > p:has(+ div > table),
+  ul ul ul li > p:has(+ div > table),
+  ol ol ol li > p:has(+ pre),
+  ol ol ul li > p:has(+ pre),
+  ol ul ol li > p:has(+ pre),
+  ol ul ul li > p:has(+ pre),
+  ul ol ol li > p:has(+ pre),
+  ul ol ul li > p:has(+ pre),
+  ul ul ol li > p:has(+ pre),
+  ul ul ul li > p:has(+ pre),
+  ol ol ol li > span:has(+ div > table),
+  ol ol ul li > span:has(+ div > table),
+  ol ul ol li > span:has(+ div > table),
+  ol ul ul li > span:has(+ div > table),
+  ul ol ol li > span:has(+ div > table),
+  ul ol ul li > span:has(+ div > table),
+  ul ul ol li > span:has(+ div > table),
+  ul ul ul li > span:has(+ div > table),
+  ol ol ol li > span:has(+ pre),
+  ol ol ul li > span:has(+ pre),
+  ol ul ol li > span:has(+ pre),
+  ol ul ul li > span:has(+ pre),
+  ul ol ol li > span:has(+ pre),
+  ul ol ul li > span:has(+ pre),
+  ul ul ol li > span:has(+ pre),
+  ul ul ul li > span:has(+ pre) {
+    width: calc(3.5in - 4 * var(--layout-grid-gap-wide));
+  }
+  div:has(> table),
+  pre {
+    width: 4in;
+  }
+}

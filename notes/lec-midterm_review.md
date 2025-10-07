@@ -75,6 +75,8 @@ will all be from ch 1
 
 ### task 3 - architecture
 
+all from ch 3
+
 > [!NOTE]
 >
 > ch 2 (history) skipped!
@@ -106,8 +108,6 @@ will all be from ch 1
 
 5. how bytecode enables platform independence: **compiles to runtime, not
    target arch; runtime then targets the platform**
-
-all from ch 3
 
 ### task 4 - interrupts
 
@@ -148,6 +148,8 @@ all from ch 4
    4. set PC to associated interrupt routine (ISR)
 
 ## task 5 - procs & threads
+
+all from ch 5
 
 1. c prg analysis
    1. num procs created (including initial parent proc): **3**

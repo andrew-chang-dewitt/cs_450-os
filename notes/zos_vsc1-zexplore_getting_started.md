@@ -11,7 +11,7 @@ keywords:
   - "illinois tech"
 meta:
   byline: Andrew Chang-DeWitt
-  published: "2025-09-25T00:00-06:00"
+  published: "2025-11-11T00:00-06:00"
 ---
 
 this first module is a simple setup/intro. it directed me on how to
